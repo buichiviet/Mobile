@@ -1,20 +1,47 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import FlatListScreen from './screens/FlatListScreen';
-import SectionListScreen from './screens/SectionListScreen';
-
-const Stack = createStackNavigator();
+import React, { useState } from "react";
+import { View, Button, StyleSheet, Dimensions } from "react-native";
 
 const App = () => {
+  const [backgroundColor, setBackgroundColor] = useState("#ffffff");
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="FlatList">
-        <Stack.Screen name="FlatList" component={FlatListScreen} options={{ title: 'Danh sách sản phẩm' }} />
-        <Stack.Screen name="SectionList" component={SectionListScreen} options={{ title: 'Nhóm sản phẩm' }} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <View style={[styles.container, { backgroundColor }]}>
+      <View style={styles.buttonContainer}>
+        <Button title="Green" color="#28A745" onPress={() => setBackgroundColor("#28A745")} />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button title="Blue" color="#0000FF" onPress={() => setBackgroundColor("#0000FF")} />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button title="Brown" color="#8B4513" onPress={() => setBackgroundColor("#8B4513")} />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button title="Yellow" color="#FFFF00" onPress={() => setBackgroundColor("#FFFF00")} />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button title="Red" color="#FF5733" onPress={() => setBackgroundColor("#FF5733")} />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button title="Black" color="#000000" onPress={() => setBackgroundColor("#000000")} />
+      </View>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buttonContainer: {
+    width: Dimensions.get("window").width, 
+    marginVertical: 5,
+    paddingVertical: 5,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+
+});
 
 export default App;
