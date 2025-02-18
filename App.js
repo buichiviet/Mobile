@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
-
 const App = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
 
@@ -62,7 +61,6 @@ const App = ({ navigation }) => {
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -110,6 +108,5 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
-
 
 export default App;
