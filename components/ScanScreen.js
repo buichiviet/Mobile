@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 
-export default function HomeScreen({ navigation }) {
+export default function ScanScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Home Screen</Text>
-      <Button title="Go to Scan" onPress={() => navigation.navigate('Scan')} />
+      <Text style={styles.text}>Scan Screen</Text>
+      <Button title="Go to Home" onPress={() => navigation.navigate('Home')} />
     </View>
   );
 }
