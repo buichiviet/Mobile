@@ -1,12 +1,13 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from './components/HomeScreen';
-import ScanScreen from './components/ScanScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import HomeScreen from '../components/HomeScreen';
+import ScanScreen from '../components/ScanScreen';
+import { Ionicons } from '@expo/vector-icons';
 
-const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 function HomeStack() {
   return (
@@ -24,10 +25,22 @@ function ScanStack() {
   );
 }
 
-export default function App() {
+export default function Navigation() {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ color, size }) => {
+            let iconName;
+            if (route.name === 'Home') {
+              iconName = 'home';
+            } else if (route.name === 'Scan') {
+              iconName = 'camera';
+            }
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+        })}
+      >
         <Tab.Screen name="Home" component={HomeStack} />
         <Tab.Screen name="Scan" component={ScanStack} />
       </Tab.Navigator>
