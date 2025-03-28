@@ -1,24 +1,37 @@
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import SplashScreen from "./components/SplashScreen";
-import OnboardingScreen from "./components/OnboardingScreen";
-import SignInScreen from "./components/SignInScreen";
-import EnterNumberScreen from "./components/EnterNumberScreen";
-import VerificationScreen from "./components/VerificationScreen";
+import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import HomeScreen from './components/HomeScreen';
+import CartScreen from './components/CartScreen';
+import ProfileScreen from './components/ProfileScreen';
+import { Ionicons } from '@expo/vector-icons';
 
-const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
-export default function App() {
+const BottomNavigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Splash" component={SplashScreen} />
-        <Stack.Screen name="Onboarding" component={OnboardingScreen} />
-        <Stack.Screen name="SignIn" component={SignInScreen} />
-        <Stack.Screen name="EnterNumber" component={EnterNumberScreen} />
-        <Stack.Screen name="Verification" component={VerificationScreen} />
-      </Stack.Navigator>
+      <Tab.Navigator screenOptions={({ route }) => ({
+        tabBarIcon: ({ color, size }) => {
+          let iconName;
+          if (route.name === 'Home') {
+            iconName = 'home';
+          } else if (route.name === 'Cart') {
+            iconName = 'cart';
+          } else if (route.name === 'Profile') {
+            iconName = 'person';
+          }
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: 'purple',
+        tabBarInactiveTintColor: 'gray',
+      })}>
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Cart" component={CartScreen} />
+        <Tab.Screen name="Profile" component={ProfileScreen} />
+      </Tab.Navigator>
     </NavigationContainer>
   );
-}
+};
+
+export default BottomNavigation;
