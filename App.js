@@ -1,37 +1,19 @@
-import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
-import HomeScreen from './components/HomeScreen';
-import CartScreen from './components/CartScreen';
-import ProfileScreen from './components/ProfileScreen';
-import { Ionicons } from '@expo/vector-icons';
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
+import LocationScreen from "./components/LocationScreen";
+import LoginScreen from "./components/LoginScreen";
+import SignupScreen from "./components/SignupScreen";
 
-const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
-const BottomNavigation = () => {
+export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator screenOptions={({ route }) => ({
-        tabBarIcon: ({ color, size }) => {
-          let iconName;
-          if (route.name === 'Home') {
-            iconName = 'home';
-          } else if (route.name === 'Cart') {
-            iconName = 'cart';
-          } else if (route.name === 'Profile') {
-            iconName = 'person';
-          }
-          return <Ionicons name={iconName} size={size} color={color} />;
-        },
-        tabBarActiveTintColor: 'purple',
-        tabBarInactiveTintColor: 'gray',
-      })}>
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Cart" component={CartScreen} />
-        <Tab.Screen name="Profile" component={ProfileScreen} />
-      </Tab.Navigator>
+      <Stack.Navigator initialRouteName="LocationScreen" screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="LocationScreen" component={LocationScreen} />
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="SignupScreen" component={SignupScreen} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
-};
-
-export default BottomNavigation;
+}
