@@ -1,156 +1,224 @@
-import React, { useState } from 'react';
-import { View, Text, Image, TextInput, TouchableOpacity, ScrollView, StyleSheet, FlatList } from 'react-native';
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import React from "react";
+import { View, Text, TextInput, ScrollView, Image, TouchableOpacity, StyleSheet, ImageBackground, FlatList } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
-const categoriesData = [
-  { id: '1', name: 'PIZZA', icon: 'local-pizza' },
-  { id: '2', name: 'BURGER', icon: 'fastfood' },
-  { id: '3', name: 'DRINK', icon: 'local-drink' },
-  { id: '4', name: 'RICE', icon: 'rice-bowl' },
-];
-
-const popularItems = [
-  { id: '1', name: 'BURGER', image: '../assets/burger2.png' },
-  { id: '2', name: 'PIZZA', image: '../assets/pizza.jpg' },
-];
-
-const HomeScreen = () => {
-  const [selectedCategory, setSelectedCategory] = useState('1'); // Mặc định chọn PIZZA
-
+const HomeScreen = ({ navigation }) => {
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
+      <Image source={require("../assets/carot.png")} style={styles.icon} />
       {/* Header */}
       <View style={styles.header}>
-        <Image source={require('../assets/avatar.png')} style={styles.profileImage} />
-        <View>
-          <Text style={styles.locationTitle}>Vị trí của bạn</Text>
-          <Text style={styles.location}>Cầu Giấy, Hà Nội</Text>
-        </View>
-        <TouchableOpacity style={styles.notificationButton}>
-          <Ionicons name="notifications-outline" size={24} color="black" />
-        </TouchableOpacity>
+        <Ionicons name="location-outline" size={24} color="black" style ={{marginLeft:90}}/>
+        <Text style={styles.locationText}>Cầu Giấy, Hà Nội</Text>
       </View>
-
-      {/* Search */}
+      
+      {/* Search Bar */}
       <View style={styles.searchContainer}>
-        <TextInput placeholder="Search your food" style={styles.searchInput} />
-        <TouchableOpacity style={styles.filterButton}>
-          <Ionicons name="filter" size={24} color="white" />
+        <Ionicons name="search" size={20} color="#888" style={styles.searchIcon} />
+        <TextInput placeholder="Search Store" style={styles.searchInput} />
+      </View>
+      
+      {/* Banner */}
+      <View style={styles.banner}>
+        <ImageBackground source={require("../assets/fresh.jpg")} style={styles.bannerImage} />
+      </View>
+      
+      {/* Exclusive Offers */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Exclusive Offer</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("ExclusiveOffers")}>
+          <Text style={styles.seeAll}>See all</Text>
         </TouchableOpacity>
       </View>
-
-      {/* Danh mục */}
-      <FlatList
-        horizontal
-        data={categoriesData}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => {
-          const isActive = item.id === selectedCategory;
-          return (
-            <TouchableOpacity
-              style={[styles.categoryButton, isActive && styles.categoryButtonActive]}
-              onPress={() => setSelectedCategory(item.id)}
-            >
-              <MaterialIcons name={item.icon} size={24} color={isActive ? 'white' : 'black'} />
-              <Text style={[styles.categoryText, isActive && styles.categoryTextActive]}>
-                {item.name}
-              </Text>
-            </TouchableOpacity>
-          );
-        }}
-        contentContainerStyle={styles.categoryContainer}
-        showsHorizontalScrollIndicator={false}
-      />
-
-      {/* Banner */}
-      <View style={styles.bannerContainer}>
-        <Image source={require('../assets/burger.jpg')} style={styles.burgerBanner} />
-      <View style={styles.bannerOverlay}>
-      <Text style={styles.bannerText}>BURGER</Text>
-      <Text style={styles.bannerSubText}>Today's Hot Offer</Text>
-      <View style={styles.discountBadge}>
-        <Text style={styles.discountText}>10% OFF</Text>
+      
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.productList}>
+        <View style={styles.productCard}>
+          <Image source={require("../assets/chuoi.png")} style={styles.productImage} />
+          <Text>Organic Bananas</Text>
+          <Text style ={styles.productPrice}> $4.99</Text>
+          <TouchableOpacity style={styles.addButton}>
+          <Ionicons name="add" size={20} color="white" />
+        </TouchableOpacity>
         </View>
-          <Text style={styles.ratingText}>⭐ 4.9 (3k+ Rating)</Text>
+        <View style={styles.productCard}>
+          <Image source={require("../assets/tao.jpg")} style={styles.productImage} />
+          <Text>Red Apple</Text>
+          <Text style = {styles.productPrice}>$4.99</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("ProductDetail")}style={styles.addButton}>
+          <Ionicons name="add" size={20} color="white" />
+        </TouchableOpacity>
         </View>
-      </View>
+    
+        
+      </ScrollView>
+    </View>
+  );
+};
 
-      {/* Popular Items */}
-      <View style={styles.popularContainer}>
-        <Text style={styles.popularTitle}>Popular Items</Text>
-        <TouchableOpacity><Text style={styles.viewAll}>View All</Text></TouchableOpacity>
-      </View>
+const ProductDetailScreen = ({ navigation }) => {
+  return (
+    <View style={styles.container}>
+      <Image source={require("../assets/tao2.jpg")} style={styles.productDetailImage} />
+      <Text style={styles.productTitle}>Natural Red Apple</Text>
+      <Text style={styles.productPrice}>$4.99</Text>
+      
+      <Text style={styles.productDescription}>Apples are nutritious and good for health. They are beneficial for weight loss and heart health.</Text>
+      <TouchableOpacity style={styles.addToBasketButton}>
+        <Text style={styles.buttonText}>Add To Basket</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
+const ExploreScreen = ({ navigation }) => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.sectionTitle}>Find Products</Text>
+      <ScrollView  >
+        <TouchableOpacity style={styles.categoryBox}>
+          <Text>Fresh Fruits & Vegetables</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.categoryBox}>
+          <Text>Cooking Oil & Ghee</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.categoryBox}>
+          <Text>Bakery & Snacks</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.categoryBox}>
+          <Text>Beverages</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </View>
+  );
+};
+const beverages = [
+  { id: '1', name: 'Diet Coke', size: '355ml', price: '$1.99', image: require('../assets/diet.jpg') },
+  { id: '2', name: 'Sprite Can', size: '325ml', price: '$1.50', image: require('../assets/sprite.jpg') },
+  { id: '3', name: 'Apple & Grape Juice', size: '2L', price: '$15.99', image: require('../assets/appleandgrape.jpg') },
+  { id: '4', name: 'Orange Juice', size: '2L', price: '$15.99', image: require('../assets/orange.jpg') },
+  { id: '5', name: 'Coca Cola Can', size: '325mL', price: '$15.99', image: require('../assets/coca.jpg') },
+  { id: '6', name: 'Pepsi Can', size: '330mL', price: '$15.99', image: require('../assets/pepsi.jpg') },
+];
+const BeveragesScreen = ({ navigation }) => {
+  const renderItem = ({ item }) => (
+    <View style={styles.beverageCard}>
+      <Image source={item.image} style={styles.productImage} />
+      <Text style={styles.beverageName}>{item.name}</Text>
+      <Text style={styles.beverageSize}>{item.size}, Price</Text>
+      <Text style={styles.productPrice}>{item.price}</Text>
+      <TouchableOpacity style={styles.addButton}>
+        <Ionicons name="add" size={20} color="white" />
+      </TouchableOpacity>
+    </View>
+  );
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.sectionTitle}>Beverages</Text>
       <FlatList
-        horizontal
-        data={popularItems}
+        data={beverages}
+        renderItem={renderItem}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.foodCard}>
-            <Image source={{ uri: item.image }} style={styles.foodImage} />
-            <Text style={styles.foodName}>{item.name}</Text>
-          </View>
-        )}
-        contentContainerStyle={styles.popularItems}
-        showsHorizontalScrollIndicator={false}
+        numColumns={2}
+        columnWrapperStyle={{ justifyContent: 'space-between' }}
+        contentContainerStyle={{ paddingVertical: 10 }}
       />
-    </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', padding: 20 },
-  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
-  profileImage: { width: 50, height: 50, borderRadius: 25 },
-  locationTitle: { fontSize: 12, color: 'gray' },
-  location: { fontSize: 16, fontWeight: 'bold' },
-  notificationButton: { padding: 5, backgroundColor: '#f9f9f9', borderRadius: 20 },
-  searchContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#f0f0f0', borderRadius: 10, padding: 10, marginBottom: 20 },
-  searchInput: { flex: 1, fontSize: 16 },
-  filterButton: { backgroundColor: '#5c67f2', padding: 10, borderRadius: 10 },
-  
-  categoryContainer: { flexDirection: 'row', marginBottom: 20 },
-  categoryButton: {
-    flexDirection: 'column',
+  container: { flex: 1, padding: 16, backgroundColor: "#fff" },
+  header: { flexDirection: "row", alignItems: "center", marginBottom: 10, },
+  locationText: { marginLeft: 10, fontSize: 16, fontWeight: "bold",},
+  searchContainer: { flexDirection: "row", alignItems: "center", backgroundColor: "#f0f0f0", borderRadius: 10, paddingHorizontal: 10, marginBottom: 15 },
+  searchIcon: { marginRight: 5 },
+  searchInput: { flex: 1, paddingVertical: 8 },
+  banner: { padding: 15, borderRadius: 10, alignItems: "center", marginBottom: 15 },
+  bannerImage: { width: "100%", height: 80, resizeMode: "contain" },
+  bannerText: { fontSize: 16, fontWeight: "bold", marginTop: 5 },
+  section: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 10 },
+  sectionTitle: { fontSize: 18, fontWeight: "bold" },
+  seeAll: { color: "green" },
+  productList: { 
+    flexDirection: "row",
+    borderRadius: 12,
+    padding: 10,
+    marginBottom: 15,
+    position: 'relative',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  productCard: { alignItems: "center", backgroundColor: "#fff", padding: 10, borderRadius: 10, marginRight: 10, elevation: 3, width:'60%', height:200 },
+ // productImage: { width: 80, height: 80, resizeMode: "contain", marginBottom: 5 },
+  productDetailImage: { width: "100%", height: 200, resizeMode: "contain", marginBottom: 10 },
+  productTitle: { fontSize: 22, fontWeight: "bold", marginBottom: 5 },
+  productPrice: { fontSize: 16, fontWeight: "bold", color: "green", marginBottom: 5 },
+  productDescription: { fontSize: 14, color: "gray", marginBottom: 10 },
+  addToBasketButton: { backgroundColor: "green", padding: 10, borderRadius: 10, alignItems: "center" },
+  buttonText: { color: "white", fontSize: 16, fontWeight: "bold" },
+  categoryBox: {  backgroundColor: "#f0f0f0", padding: 15, borderRadius: 10, marginBottom: 10, alignItems: "center" },
+  beverageCard: {
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 10,
+    marginBottom: 15,
+    width: '48%',
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: 15,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 15,
-    marginHorizontal: 5,
-    width: 100,
-    height: 80,
+    elevation: 3,
+    position: 'relative',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
-  categoryButtonActive: {
-    backgroundColor: '#00c853', // Màu xanh lá khi active
-  },
-  categoryText: {
-    fontSize: 14,
+  
+  productImage: {
+    width: 70,
+    height: 70,
+    resizeMode: "contain",
+    marginBottom: 8,
     marginTop: 5,
-    color: 'black',
   },
-  categoryTextActive: {
-    color: 'white', // Màu trắng khi active
+  
+  beverageName: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 2,
   },
-
-  bannerContainer: {position: 'relative', borderRadius: 10, overflow: 'hidden', marginBottom: 20 },
-  burgerBanner: { width: '100%', height: 200, resizeMode: 'cover' },
-  bannerOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center',paddingLeft: 20, alignItems: 'flex-start', backgroundColor: 'rgba(0,0,0,0.3)' },
-  bannerText: { color: 'yellow', fontSize: 30, fontWeight: 'bold' },
-  bannerSubText: { color: 'white', fontSize: 20 },
-  discountBadge: { backgroundColor: 'blue', padding: 5, borderRadius: 5, marginTop: 5 },
-  discountText: { color: 'white', fontSize: 20 },
-  ratingText: { color: 'white', fontSize: 20, marginTop: 5 },
-
-
-  popularContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
-  popularTitle: { fontSize: 18, fontWeight: 'bold' },
-  viewAll: { color: '#5c67f2', fontSize: 14 },
-
-  popularItems: { flexDirection: 'row' },
-  foodCard: { alignItems: 'center', marginHorizontal: 5 },
-  foodImage: { width: 100, height: 100, borderRadius: 10 },
-  foodName: { marginTop: 5, fontSize: 14, fontWeight: 'bold' },
+  
+  beverageSize: {
+    fontSize: 12,
+    color: 'gray',
+    marginBottom: 2,
+  },
+  
+  productPrice: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: "black",
+    marginBottom: 25, 
+  },
+  
+  addButton: {
+    backgroundColor: 'green',
+    borderRadius: 20,
+    padding: 6,
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
+    elevation: 3,
+  },
+  icon: {
+    width: 40, 
+    height: 40,
+    marginBottom: 10,
+    marginLeft:150 
+  },
 });
 
-export default HomeScreen;
+export { HomeScreen, ProductDetailScreen, ExploreScreen, BeveragesScreen };
