@@ -1,57 +1,148 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons';
+/*
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, TextInput, Button, ActivityIndicator, Alert, StyleSheet } from 'react-native';
+import axios from 'axios';
 
-import {
-  HomeScreen,
+export default function App() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [name, setName] = useState('');
+  const [job, setJob] = useState('');
+  const [adding, setAdding] = useState(false);
 
-  ProductDetailScreen,
-  ExploreScreen,
-  BeveragesScreen
-} from './components/HomeScreen';
-import ProfileScreen from './components/ProfileScreen';
-import ShoppingCartScreen from "./components/ShoppingCartScreen";
+  // Gọi API lấy danh sách người dùng
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get('https://reqres.in/api/users?page=1');
+      setUsers(res.data.data);
+    } catch (err) {
+      setError('Lỗi khi lấy dữ liệu!');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
+  // Gọi API thêm người dùng
+  const addUser = async () => {
+    if (!name || !job) {
+      Alert.alert('Vui lòng nhập đủ thông tin');
+      return;
+    }
+  
+    try {
+      setAdding(true);
+      const res = await axios.post('https://reqres.in/api/users', {
+        name,
+        job
+      });
+  
+      Alert.alert('Thêm thành công!', `ID: ${res.data.id}`);
+  
+      // 👇 Thêm người dùng mới vào danh sách local
+      const newUser = {
+        id: res.data.id,
+        first_name: name,
+        last_name: '',
+        job: job,
+      };
+  
+      setUsers((prevUsers) => [newUser, ...prevUsers]);
+  
+      // Reset form
+      setName('');
+      setJob('');
+    } catch (err) {
+      Alert.alert('Lỗi khi thêm người dùng');
+    } finally {
+      setAdding(false);
+    }
+  };
+  
 
-function MainTabs() {
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
   return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ color, size }) => {
-          let iconName;
-          if (route.name === 'Home') iconName = 'home';
-          else if (route.name === 'Cart') iconName = 'cart';
-          else if (route.name === 'Explore') iconName = 'grid-outline';
-          else if (route.name === 'Beverages') iconName = 'wine-outline';
-          else if (route.name === 'Account') iconName = 'person';
-          return <Ionicons name={iconName} size={size} color={color} />;
-        },
-        tabBarActiveTintColor: 'green',
-        tabBarInactiveTintColor: 'gray',
-      })}
-    >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Cart" component={ShoppingCartScreen} />
-      <Tab.Screen name="Explore" component={ExploreScreen} />
-      <Tab.Screen name="Beverages" component={BeveragesScreen} />
-      <Tab.Screen name="Account" component={ProfileScreen} />
-    </Tab.Navigator>
+    <View style={styles.container}>
+      <Text style={styles.title}>📋 Danh sách người dùng</Text>
+
+      {loading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : error ? (
+        <Text style={styles.error}>{error}</Text>
+      ) : (
+        <FlatList
+          data={users}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <Text style={styles.item}>
+              👤 {item.first_name} {item.last_name}
+              {item.job ? ` - ${item.job}` : ''}
+            </Text>
+          )}
+        />
+      )}
+
+      <Text style={styles.title}>➕ Thêm người dùng</Text>
+
+      <TextInput
+        placeholder="Tên"
+        style={styles.input}
+        value={name}
+        onChangeText={setName}
+      />
+      <TextInput
+        placeholder="Công việc"
+        style={styles.input}
+        value={job}
+        onChangeText={setJob}
+      />
+      {adding ? (
+        <ActivityIndicator size="small" />
+      ) : (
+        <Button title="Thêm" onPress={addUser} />
+      )}
+    </View>
   );
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    paddingTop: 40
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginVertical: 10
+  },
+  item: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderColor: '#ddd'
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#aaa',
+    padding: 10,
+    marginVertical: 5,
+    borderRadius: 5
+  },
+  error: {
+    color: 'red',
+    marginBottom: 10
+  }
+});
+
+*/
+
+import React from 'react';
+import SearchScreen from './components/SearchScreen'; 
+
 export default function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Main" component={MainTabs} options={{ headerShown: false }} />
-        <Stack.Screen name="ProductDetail" component={ProductDetailScreen} />
-        <Stack.Screen name="ShoppingCartScreen" component={ShoppingCartScreen} />
-        <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+  return <SearchScreen />;
 }

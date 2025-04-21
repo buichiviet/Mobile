@@ -1,3 +1,4 @@
+/*
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -39,5 +40,27 @@ export default function MainTabs() {
       <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="Scan" component={ScanStack} />
     </Tab.Navigator>
+  );
+}
+
+*/
+
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack'; 
+
+import SearchScreen from './SearchScreen';
+import FilterScreen from './FilterScreen';
+
+const Stack = createNativeStackNavigator();
+
+export default function Navigation() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Search" component={SearchScreen} />
+        <Stack.Screen name="Filter" component={FilterScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
